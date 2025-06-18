@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Cadastro de Cachorro</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; }
+    label, select { display: block; margin-top: 10px; }
+    img { max-width: 300px; margin-top: 20px; }
+    .info { margin-top: 20px; }
+  </style>
+</head>
+<body>
+  <h1>Escolha seu Cachorro</h1>
+
+  <label for="raca">Raça:</label>
+  <select id="raca"></select>
+
+  <label for="cor">Cor:</label>
+  <select id="cor"></select>
+
+  <div class="info">
+    <img id="foto" src="" alt="Imagem do cachorro" />
+    <p id="descricao"></p>
+  </div>
+
+  <script>
+    // Superclasse Animal
+    class Animal {
+      constructor(patas, olhos) {
+        this.patas = patas;
+        this.olhos = olhos;
+      }
+    }
+
+    // Subclasse Cachorro
+    class Cachorro extends Animal {
+      constructor(patas, olhos, raca, cor) {
+        super(patas, olhos);
+        this.raca = raca;
+        this.cor = cor;
+      }
+    }
+
+    // Objeto com raças predefinidas
+    const racas = {
+      "Labrador": {
+        descricao: "Labradores são amigáveis, inteligentes e ótimos com crianças.",
+        cores: ["Amarelo", "Preto", "Chocolate"],
+        imagem: "https://blog-static.petlove.com.br/wp-content/uploads/2018/11/labrador.png"
+      },
+      "Poodle": {
+        descricao: "Poodles são altamente inteligentes e muito obedientes.",
+        cores: ["Branco", "Cinza", "Preto"],
+        imagem: "https://www.agrosete.com.br/wp-content/uploads/2017/05/caniche-9-1-800x600.jpg"
+      },
+      "Bulldog": {
+        descricao: "Bulldogs são calmos, corajosos e bastante afetuosos.",
+        cores: ["Branco", "Marrom", "Rajado"],
+        imagem: "https://i0.wp.com/petcaramelo.com/wp-content/uploads/2018/09/french-bulldogs-3.jpg?w=1920&ssl=1"
+      },
+      "Pastor Alemão": {
+        descricao: "Pastores Alemães são leais, protetores e muito inteligentes.",
+        cores: ["Preto e Marrom", "Preto", "Cinzento"],
+        imagem: "https://gestoranimal.com.br/wp-content/uploads/2021/07/grupo-de-pastores-alemaes-sentados-e-deitados-no-gramado.jpg"
+      }
+    };
+
+    const racaSelect = document.getElementById('raca');
+    const corSelect = document.getElementById('cor');
+    const foto = document.getElementById('foto');
+    const descricao = document.getElementById('descricao');
+
+    // Carrega as raças no select
+    function carregarRacas() {
+      for (let raca in racas) {
+        let option = document.createElement('option');
+        option.value = raca;
+        option.textContent = raca;
+        racaSelect.appendChild(option);
+      }
+      atualizarCorERaca();
+    }
+
+    // Atualiza cor e descrição ao mudar a raça
+    function atualizarCorERaca() {
+      const racaSelecionada = racaSelect.value;
+      const dados = racas[racaSelecionada];
+
+      // Limpa e adiciona cores
+      corSelect.innerHTML = '';
+      dados.cores.forEach(cor => {
+        let opt = document.createElement('option');
+        opt.value = cor;
+        opt.textContent = cor;
+        corSelect.appendChild(opt);
+      });
+
+      // Cria novo objeto cachorro
+      const novoCachorro = new Cachorro(4, 2, racaSelecionada, dados.cores[0]);
+      atualizarInterface(novoCachorro, dados);
+    }
+
+    // Atualiza a interface com dados do cachorro
+    function atualizarInterface(cachorro, dados) {
+      descricao.textContent = `${cachorro.raca} (${cachorro.cor}) - ${dados.descricao}`;
+      foto.src = dados.imagem;
+      foto.alt = `Foto de um ${cachorro.raca}`;
+    }
+
+    // Eventos
+    racaSelect.addEventListener('change', atualizarCorERaca);
+    corSelect.addEventListener('change', () => {
+      const racaSelecionada = racaSelect.value;
+      const corSelecionada = corSelect.value;
+      const dados = racas[racaSelecionada];
+      const novoCachorro = new Cachorro(4, 2, racaSelecionada, corSelecionada);
+      atualizarInterface(novoCachorro, dados);
+    });
+
+    // Inicialização
+    carregarRacas();
+  </script>
+</body>
+</html>
+
+        
