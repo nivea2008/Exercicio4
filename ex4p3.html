@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <title>Validação de Usuários</title>
+</head>
+<body>
+  <h2>Cadastro de Usuário</h2>
+  <button onclick="registrarUsuarios()">Iniciar Cadastro</button>
+
+  <script>
+    function registrarUsuarios() {
+      const usuarios = [];
+      const anoAtual = new Date().getFullYear();
+
+      for (let i = 0; i < 3; i++) {
+        const nome = prompt(`Usuário ${i + 1}: Qual seu nome?`);
+        const anoNascimento = parseInt(prompt(`Usuário ${i + 1}: Qual seu ano de nascimento?`));
+
+        const idade = anoAtual - anoNascimento;
+
+        if (idade >= 18) {
+          alert(`Bem-vindo, ${nome}!`);
+          const username = prompt("Crie seu nome de usuário:");
+          const senha = prompt("Crie sua senha:");
+
+          const usuario = {
+            nome: nome,
+            anoNascimento: anoNascimento,
+            idade: idade,
+            username: username,
+            senha: senha
+          };
+
+          usuarios.push(usuario);
+        } else {
+          alert(`${nome}, você é menor de idade. Login não permitido.`);
+        }
+      }
+
+      const usuariosJSON = JSON.stringify(usuarios, null, 2);
+      console.log("Usuários cadastrados (JSON):");
+      console.log(usuariosJSON);
+    }
+  </script>
+</body>
+</html>
